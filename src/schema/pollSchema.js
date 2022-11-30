@@ -1,5 +1,6 @@
 import joi from 'joi';
 import dayjs from 'dayjs';
+
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
 
 dayjs.extend(customParseFormat);
@@ -19,6 +20,7 @@ export const pollSchema = joi.object({
     }),
   expireAt: joi.string()
     .empty('', null)
+    .trim()
     .custom(date, 'date validation')
     .messages({
       'any.invalid': 'Data inválida'
