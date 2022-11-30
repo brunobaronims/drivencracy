@@ -36,6 +36,7 @@ export async function getChoices(req, res) {
 
 export async function postVote(req, res) {
   const choiceId = req.choiceId;
+  dayjs.locale('pt-br');
 
   try {
     await voteCollection.insertOne({

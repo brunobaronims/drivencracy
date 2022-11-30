@@ -4,6 +4,7 @@ import { pollSchema } from "../schema/pollSchema.js";
 
 export async function pollValidation(req, res, next) {
   const data = req.body;
+  dayjs.locale('pt-br');
 
   try {
     await pollSchema.validateAsync(data);

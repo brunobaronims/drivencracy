@@ -7,6 +7,7 @@ import { pollCollection } from '../db/mongo.js';
 
 export async function choiceValidation(req, res, next) {
   const data = req.body;
+  dayjs.locale('pt-br');
 
   try {
     await choiceSchema.validateAsync(data);
