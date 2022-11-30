@@ -24,7 +24,10 @@ export async function choiceValidation(req, res, next) {
     return res.status(404).send('Enquete não existente');
   }
 
-  const titleExists = await choiceCollection.findOne({ title: data.title });
+  const titleExists = await choiceCollection.findOne({ 
+    title: data.title,
+    pollId: new ObjectId(data.pollId)
+  });
   if (titleExists)
     return res.status(409).send('Nome da opção não pode ser repetido');
 

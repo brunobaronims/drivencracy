@@ -30,3 +30,34 @@ export async function getPolls(req, res) {
     return res.sendStatus(500);
   }
 }
+
+export async function getPollResult(req, res) {
+  const poll = req.poll;
+
+  try {
+    const choices = await choiceCollection.find({ pollId: poll._id }).toArray();
+
+    const summary = await Promise.all(choices.map(async (choice) => {
+      const buffer = {
+        _id: poll._id,
+        title: poll.title,
+        expireAt: poll.expireAt,
+        result: {
+          title: choice.title,
+          votes: (await voteCollection.find({ choiceId: choice._id }).toArray()).length
+        } 
+      };
+      
+      return buffer;
+    }));
+
+    const mostVotes = Math.max(...summary.map(s => s.result.votes));
+    const winner = summary.filter(s => s.result.votes === mostVotes);
+
+    if (winner.length === 1)
+      return res.status(200).send(winner[0]);
+    return res.status(200).send(winner);
+  } catch (e) {
+    return res.sendStatus(500);
+  }
+}
