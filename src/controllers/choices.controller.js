@@ -26,7 +26,7 @@ export async function getChoices(req, res) {
   const pollId = req.params.id;
 
   try {
-    const choices = await choiceCollection.find({ pollId: pollId }).toArray();
+    const choices = await choiceCollection.find({ pollId: new ObjectId(pollId) }).toArray();
 
     return res.status(200).send(choices);
   } catch (e) {
