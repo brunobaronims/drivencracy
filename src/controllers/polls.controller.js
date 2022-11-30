@@ -1,4 +1,8 @@
-import { pollCollection } from '../db/mongo.js';
+import {
+  pollCollection,
+  choiceCollection,
+  voteCollection
+} from '../db/mongo.js';
 
 export async function postPoll(req, res) {
   const poll = await req.body;

@@ -16,15 +16,16 @@ export async function choiceValidation(req, res, next) {
 
   try {
     const poll = await pollCollection.findOne({ _id: new ObjectId(data.pollId) });
-
-    if (dayjs(poll.expireAt).isBefore(dayjs()))
+    
+    const pollExpired = dayjs(poll.expireAt).isBefore(dayjs());
+    if (pollExpired)
       return res.status(403).send('Enquete expirada');
   } catch (e) {
     return res.status(404).send('Enquete não existente');
   }
 
-  const title = await choiceCollection.findOne({ title: data.title });
-  if (title)
+  const titleExists = await choiceCollection.findOne({ title: data.title });
+  if (titleExists)
     return res.status(409).send('Nome da opção não pode ser repetido');
 
   next();
